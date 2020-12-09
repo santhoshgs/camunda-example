@@ -5,27 +5,27 @@
       <bpmn:outgoing>Flow_0s8znkb</bpmn:outgoing>
     </bpmn:startEvent>
     <bpmn:exclusiveGateway id="domainCheckGW" name="Check for domain">
-      <bpmn:incoming>Flow_0s8znkb</bpmn:incoming>
+      <bpmn:incoming>Flow_1geqvec</bpmn:incoming>
       <bpmn:outgoing>CredtiFlow</bpmn:outgoing>
       <bpmn:outgoing>NCplusFlow</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:sequenceFlow id="Flow_0s8znkb" sourceRef="StartEvent_1" targetRef="domainCheckGW" />
+    <bpmn:sequenceFlow id="Flow_0s8znkb" sourceRef="StartEvent_1" targetRef="Activity_1kvtwfs" />
     <bpmn:exclusiveGateway id="Gateway_0v0i98p">
       <bpmn:incoming>CredtiFlow</bpmn:incoming>
       <bpmn:outgoing>ingestidentityflow</bpmn:outgoing>
       <bpmn:outgoing>Flow_0l2fprb</bpmn:outgoing>
     </bpmn:exclusiveGateway>
     <bpmn:sequenceFlow id="CredtiFlow" name="Credit Flow" sourceRef="domainCheckGW" targetRef="Gateway_0v0i98p">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">#{domain==credit}</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${domain=="credit"}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="ingestidentityflow" name="Ingest Identity" sourceRef="Gateway_0v0i98p" targetRef="Ingestsvc">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">#{entity==ingest}</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${entity==ingest}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_0l2fprb" name="Find Entity" sourceRef="Gateway_0v0i98p" targetRef="Findentitysvc">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">#{entity==find}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="NCplusFlow" name="NC+" sourceRef="domainCheckGW" targetRef="Activity_00sp8m9">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">#{domain==nc}</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${domain==nc}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:endEvent id="Event_0mqtixf">
       <bpmn:incoming>Flow_1gcvide</bpmn:incoming>
@@ -51,18 +51,39 @@
       <bpmn:incoming>NCplusFlow</bpmn:incoming>
       <bpmn:outgoing>Flow_0nius4r</bpmn:outgoing>
     </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_1geqvec" sourceRef="Activity_1kvtwfs" targetRef="domainCheckGW" />
+    <bpmn:serviceTask id="Activity_1kvtwfs" camunda:class="com.example.workflow.servicetask.FindServiceTask">
+      <bpmn:incoming>Flow_0s8znkb</bpmn:incoming>
+      <bpmn:outgoing>Flow_1geqvec</bpmn:outgoing>
+    </bpmn:serviceTask>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="CredtiReportGeneration">
-      <bpmndi:BPMNEdge id="Flow_0s8znkb_di" bpmnElement="Flow_0s8znkb">
-        <di:waypoint x="215" y="430" />
-        <di:waypoint x="315" y="430" />
+      <bpmndi:BPMNEdge id="Flow_0nius4r_di" bpmnElement="Flow_0nius4r">
+        <di:waypoint x="560" y="530" />
+        <di:waypoint x="662" y="530" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0h5o57z_di" bpmnElement="CredtiFlow">
-        <di:waypoint x="340" y="405" />
-        <di:waypoint x="340" y="295" />
+      <bpmndi:BPMNEdge id="Flow_0rsvcv2_di" bpmnElement="Flow_0rsvcv2">
+        <di:waypoint x="560" y="270" />
+        <di:waypoint x="662" y="270" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1gcvide_di" bpmnElement="Flow_1gcvide">
+        <di:waypoint x="560" y="120" />
+        <di:waypoint x="662" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1r6q04z_di" bpmnElement="NCplusFlow">
+        <di:waypoint x="340" y="455" />
+        <di:waypoint x="340" y="530" />
+        <di:waypoint x="460" y="530" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="327" y="347" width="57" height="14" />
+          <dc:Bounds x="344" y="490" width="23" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0l2fprb_di" bpmnElement="Flow_0l2fprb">
+        <di:waypoint x="365" y="270" />
+        <di:waypoint x="460" y="270" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="386" y="252" width="53" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_16emnwx_di" bpmnElement="ingestidentityflow">
@@ -73,44 +94,29 @@
           <dc:Bounds x="321" y="180" width="69" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0l2fprb_di" bpmnElement="Flow_0l2fprb">
-        <di:waypoint x="365" y="270" />
-        <di:waypoint x="460" y="270" />
+      <bpmndi:BPMNEdge id="Flow_0h5o57z_di" bpmnElement="CredtiFlow">
+        <di:waypoint x="340" y="405" />
+        <di:waypoint x="340" y="295" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="386" y="252" width="53" height="14" />
+          <dc:Bounds x="327" y="347" width="57" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1r6q04z_di" bpmnElement="NCplusFlow">
-        <di:waypoint x="340" y="455" />
-        <di:waypoint x="340" y="530" />
-        <di:waypoint x="460" y="530" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="344" y="490" width="23" height="14" />
-        </bpmndi:BPMNLabel>
+      <bpmndi:BPMNEdge id="Flow_0s8znkb_di" bpmnElement="Flow_0s8znkb">
+        <di:waypoint x="168" y="430" />
+        <di:waypoint x="190" y="430" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1gcvide_di" bpmnElement="Flow_1gcvide">
-        <di:waypoint x="560" y="120" />
-        <di:waypoint x="662" y="120" />
+      <bpmndi:BPMNEdge id="Flow_1geqvec_di" bpmnElement="Flow_1geqvec">
+        <di:waypoint x="290" y="430" />
+        <di:waypoint x="315" y="430" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0rsvcv2_di" bpmnElement="Flow_0rsvcv2">
-        <di:waypoint x="560" y="270" />
-        <di:waypoint x="662" y="270" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0nius4r_di" bpmnElement="Flow_0nius4r">
-        <di:waypoint x="560" y="530" />
-        <di:waypoint x="662" y="530" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="Gateway_0v0i98p_di" bpmnElement="Gateway_0v0i98p" isMarkerVisible="true">
-        <dc:Bounds x="315" y="245" width="50" height="50" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Gateway_0syeiyz_di" bpmnElement="domainCheckGW" isMarkerVisible="true">
         <dc:Bounds x="315" y="405" width="50" height="50" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="377" y="420" width="87" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
-        <dc:Bounds x="179" y="412" width="36" height="36" />
+      <bpmndi:BPMNShape id="Gateway_0v0i98p_di" bpmnElement="Gateway_0v0i98p" isMarkerVisible="true">
+        <dc:Bounds x="315" y="245" width="50" height="50" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_0mqtixf_di" bpmnElement="Event_0mqtixf">
         <dc:Bounds x="662" y="102" width="36" height="36" />
@@ -129,6 +135,12 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1k86qdd_di" bpmnElement="Activity_00sp8m9">
         <dc:Bounds x="460" y="490" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="132" y="412" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0xfyzqt_di" bpmnElement="Activity_1kvtwfs">
+        <dc:Bounds x="190" y="390" width="100" height="80" />
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
